@@ -44,26 +44,26 @@ Artifactory will generate a pretty good configuration base for Apache Reverse Pr
 6. Download, save as `artifactory-proxy.conf` 
 7. Optional: put in better logging and timeoute
    ```
-cat <<'EOF' | patch artifactory-proxy.conf
-@@ -16,9 +16,15 @@
-     SSLProxyEngine on
-
-     ## Application specific logs
--    ## ErrorLog ${APACHE_LOG_DIR}/artifactory.apps.mgt.devsecops.gov-error.log
--    ## CustomLog ${APACHE_LOG_DIR}/artifactory.apps.mgt.devsecops.gov-access.log combined
--
-+    ErrorLog   /dev/stdout
-+    CustomLog  /dev/stdout combined
-+
-+    ## additional logging
-+    LogLevel Info
-+
-+    ##Timeout
-+    TimeOut 300
-+
-     AllowEncodedSlashes On
-     RewriteEngine on
-EOF
+   cat <<'EOF' | patch artifactory-proxy.conf
+   @@ -16,9 +16,15 @@
+        SSLProxyEngine on
+   
+        ## Application specific logs
+   -    ## ErrorLog ${APACHE_LOG_DIR}/artifactory.apps.mgt.devsecops.gov-error.log
+   -    ## CustomLog ${APACHE_LOG_DIR}/artifactory.apps.mgt.devsecops.gov-access.log combined
+   -
+   +    ErrorLog   /dev/stdout
+   +    CustomLog  /dev/stdout combined
+   +
+   +    ## additional logging
+   +    LogLevel Info
+   +
+   +    ##Timeout
+   +    TimeOut 300
+   +
+        AllowEncodedSlashes On
+        RewriteEngine on
+   EOF
    ```
 
 ###  Source Control the Apache Reverse Proxy Configuration
