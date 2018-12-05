@@ -1,23 +1,23 @@
 # Openshift Artifactory Apache Reverse Proxy
-This repository contains instructions and resources for creating an Apache Reverse Proxy on OpenShift for Artifactroy also running on OpenShift.
-This is based on the steps outlined in https://www.jfrog.com/confluence/display/RTF/Configuring+a+Reverse+Proxy only does as much of the work for you as possible.
+This repository contains instructions and resources for creating an Apache Reverse Proxy on OpenShift for Artifactory also running on OpenShift.
+This is based on the steps outlined in https://www.jfrog.com/confluence/display/RTF/Configuring+a+Reverse+Proxy, only this does as much of the work for you as possible.
 
 ## Note about NGINX
-Artifactory leands towards using NGIX rather then Apache for the reverse proxy, but after many days of troubleshooting we could not get NGINX reverse proxy working while sitting behind the OpenShift routers (HAProxy). Therefor this Apache Reverse Proxy aproach.
+Artifactory leans towards using NGIX rather then Apache for the reverse proxy, but after many days of troubleshooting we could not get NGINX reverse proxy working properly while sitting behind the OpenShift routers (HAProxy). With that in mind we opted for this Apache Reverse Proxy aproach.
 
 ## Instrucitons
 
 Instructions for setting up the Artifactory Apache Reverse Proxy.
 
-### Prerequists
+### Prerequistes
 
-1. Deploy Artifactroy to OpenShift
+1. Deploy Artifactory to OpenShift
    * Some helpful information for doing that can be found here, https://github.com/RHsyseng/artifactory-on-openshift/
 
 ### Generate Apache Reverse Proxy Configuration
 Artifactory will generate a pretty good configuration base for Apache Reverse Proxy, here are the steps to do so.
 
-1. Log into Artifactory with admin privlages
+1. Log into Artifactory with admin privileges
 2. Admin -> Configuration -> HTTP Settings
 3. Docker Settings
    * Docker Access Method: Sub Domain
@@ -27,12 +27,12 @@ Artifactory will generate a pretty good configuration base for Apache Reverse Pr
    * Internal Hostname: `artifactory.artifactory.svc`
      * assuming Artifactory is deployed in the `artifactory` namespace/project
    * Internal Port: `8081`
-     * assuming defualt Artifactory deployment
+     * assuming default Artifactory deployment
    * Internal Context Path: `artifactory`
-     * assuming defualt Artifactory deployment
+     * assuming default Artifactory deployment
    * Public Server Name: this should be the public route to Artifactory, ex: `artifactory.apps.example.org`
-   * Public COntext Path: `artifactory`
-     * assuming defualt Artifactory deployment
+   * Public Context Path: `artifactory`
+     * assuming default Artifactory deployment
    * Use HTTP: `NO` (not check)
    * Use HTTPS: `YES` (check)
    * HTTPS Port: `8443`
@@ -72,22 +72,22 @@ The S2I build of the Apache Reverse Proxy requires that the generated Apache con
 
 1. create a Git project on your SCM server, ex: `artifactory-apache-reverse-proxy`
 2. clone the new repo
-3. create a `httpd-cfg` directroy in the new repo
+3. create a `httpd-cfg` directory in the new repo
 4. put the `artifactory-proxy.conf` file in the `httpd-cfg` repo
 5. add, commit, and push the file to the repo
 6. Optional: tag the repo
 
 ### Generate the Wildcard Certificate for use by the Reverse Proxy
-The Apache Reverse Proxy will be servering multiple endpoints all based on the __Server Name Experssion__ from the __HTTP Settings__ page. Therefor a wildcard certificate to match that expression will be needed. Be sure the signing request and public/private key include the wildcard FQDN in both the primary and SAN.
+The Apache Reverse Proxy will be serving multiple endpoints all based on the __Server Name Experssion__ from the __HTTP Settings__ page. Therefore a wildcard certificate to match that expression will be needed. Be sure the signing request and public/private key include the wildcard FQDN in both the primary and SAN.
 
 ### Deploy the Artifactory Apache Reverse Proxy
 
 1. clone this repository
 2. `cd openshift-artifactory-apache-reverse-proxy`
-3. `oc project artifactroy`
-   * assuming `artifactroy` is the namespace name for where artifactroy is deployed
+3. `oc project artifactory`
+   * assuming `artifactory` is the namespace name for where artifactory is deployed
 4. `oc create -f artifactory-apache-reverse-proxy-template.yaml`
-5. Log into OpenSHift
+5. Log into OpenShift
 6. Go to the `artifactory` project
 7. Add to Project -> Select from Project
 8. Selection
@@ -99,16 +99,16 @@ The Apache Reverse Proxy will be servering multiple endpoints all based on the _
    2. Next >
 10. Configuration
     1. Git Repository URL: the URL created in the __Source Control the Apache Reverse Proxy Configuration__ section
-    2. Git Reference: change this from master if you created a tag, recomended
-    3. Git Context Directory: if you followed these instrucitons exactly, you can leave this blank, but if you put the `httpd-cfg/artifactory-proxy.conf` somewhere other then the root of the project you will need to change this.
+    2. Git Reference: change this from master if you created a tag, recommended
+    3. Git Context Directory: if you followed these instructions exactly, you can leave this blank, but if you put the `httpd-cfg/artifactory-proxy.conf` somewhere other then the root of the project you will need to change this.
     4. TLS Certificate: public certificate generated in __Generate the Wildcard Certificate for use by the Reverse Proxy__
     5. TLS Key: private certificate generated in __Generate the Wildcard Certificate for use by the Reverse Proxy__
     6. Create
 
 ### Configure Routes per Artifactory Service
-For each service you want to route through the reverse proxy you will need to create an OpenShift route for that service. For example one for the docker registery, another for the NPM regisetery, etc.
+For each service you want to route through the reverse proxy, you will need to create an OpenShift route for that service. For example, one for the docker registery, another for the NPM regisetery, etc.
 
-You would follow these steps for each service to expose, or for instance each docker registery to expose.
+You would follow these steps for each service to expose, for instance each docker registery to expose.
 
 1. OpenShift -> My Projects -> artifactory
 2. Applications -> Routes
