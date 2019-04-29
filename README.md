@@ -1,4 +1,4 @@
-# Openshift Artifactory Apache Reverse Proxy
+# OpenShift Artifactory Apache Reverse Proxy
 This repository contains instructions and resources for creating an Apache Reverse Proxy on OpenShift for Artifactory also running on OpenShift.
 This is based on the steps outlined in https://www.jfrog.com/confluence/display/RTF/Configuring+a+Reverse+Proxy, only this does as much of the work for you as possible.
 
