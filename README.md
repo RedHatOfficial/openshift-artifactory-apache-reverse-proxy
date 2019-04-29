@@ -42,7 +42,7 @@ Artifactory will generate a pretty good configuration base for Apache Reverse Pr
      * the certificate will be mounted as a secret to this locaiton, so don't change it
 5. Save
 6. Download, save as `artifactory-proxy.conf` 
-7. Optional: put in better logging and timeoute
+7. Optional: put in better logging and time out
    ```
    cat <<'EOF' | patch artifactory-proxy.conf
    @@ -16,9 +16,15 @@
