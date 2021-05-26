@@ -5,7 +5,7 @@ This is based on the steps outlined in https://www.jfrog.com/confluence/display/
 ## Note about NGINX
 Artifactory leans towards using NGIX rather then Apache for the reverse proxy, but after many days of troubleshooting we could not get NGINX reverse proxy working properly while sitting behind the OpenShift routers (HAProxy). With that in mind we opted for this Apache Reverse Proxy aproach.
 
-## Instrucitons
+## Instructions
 
 Instructions for setting up the Artifactory Apache Reverse Proxy.
 
